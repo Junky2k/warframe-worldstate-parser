@@ -35,6 +35,7 @@ const checkToString = function checkToString(worldState) {
 let pcData;
 let ps4Data;
 let xb1Data;
+let swiData;
 before(() => Promise.all([
   httpGet('http://content.warframe.com/dynamic/worldState.php').then((d) => {
     pcData = d;
@@ -45,6 +46,9 @@ before(() => Promise.all([
   httpGet('http://content.xb1.warframe.com/dynamic/worldState.php').then((d) => {
     xb1Data = d;
   }),
+  httpGet('http://content.swi.warframe.com/dynamic/worldState.php').then((d) => {
+    swiData = d;
+  }),
 ]));
 
 describe('The parser', function () {
@@ -54,15 +58,48 @@ describe('The parser', function () {
       checkToString(w);
     }).should.not.throw();
   });
+  it('Should parse the PC data to Spanish without throwing', () => {
+    (() => {
+      const w = new WorldState(pcData, { locale: 'es' });
+      checkToString(w);
+    }).should.not.throw();
+  });
+
   it('Should parse the PS4 data without throwing', () => {
     (() => {
       const w = new WorldState(ps4Data);
       checkToString(w);
     }).should.not.throw();
   });
+  it('Should parse the PS4 data to Spanish without throwing', () => {
+    (() => {
+      const w = new WorldState(ps4Data, { locale: 'es' });
+      checkToString(w);
+    }).should.not.throw();
+  });
+
   it('Should parse the XB1 data without throwing', function () {
     (() => {
       const w = new WorldState(xb1Data);
+      checkToString(w);
+    }).should.not.throw();
+  });
+  it('Should parse the XB1 data to Spanish without throwing', function () {
+    (() => {
+      const w = new WorldState(xb1Data, { locale: 'es' });
+      checkToString(w);
+    }).should.not.throw();
+  });
+
+  it('Should parse the Switch data without throwing', function () {
+    (() => {
+      const w = new WorldState(swiData);
+      checkToString(w);
+    }).should.not.throw();
+  });
+  it('Should parse the Switch data to Spanish without throwing', function () {
+    (() => {
+      const w = new WorldState(swiData, { locale: 'es' });
       checkToString(w);
     }).should.not.throw();
   });
